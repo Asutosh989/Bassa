@@ -59,7 +59,7 @@ create database Bassa
 mysql -u root -p  Bassa < Bassa.sql
 ```
 
-3. Open components/core/DBCon.py and setup database username and password.
+3. Make a copy of `.env.example` as `.env` and change your secret key, mysql hostname, username and password
 
 
 ## Test Server

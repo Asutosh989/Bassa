@@ -11,6 +11,7 @@ from multiprocessing import Process
 from DownloadDaemon import starter
 from EMail import send_mail
 import sys
+import os
 from gevent import monkey
 
 dir_path = os.path.abspath(__file__)[:-10]
@@ -20,7 +21,13 @@ import index
 monkey.patch_all(ssl=False)
 
 server = Flask(__name__)
-server.config['SECRET_KEY'] = "123456789"
+
+_DEFAULT_SECRET = '123456789'
+server.config['SECRET_KEY'] = os.environ.get('BASSA_SECRET_KEY', _DEFAULT_SECRET)
+
+if server.config['SECRET_KEY'] == _DEFAULT_SECRET:
+    logging.critical('It is strongly recommended to change the default secret key.')
+
 socketio = SocketIO(server, debug=True, logger=True, engineio_logger=True, ping_timeout=600)
 cors = CORS(server)
 p = None
